@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+.env
+y
+
+
+
+
+
+
+configs/scraper_keys.json
