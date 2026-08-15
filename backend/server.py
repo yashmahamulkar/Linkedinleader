@@ -22,6 +22,10 @@ from pathlib import Path
 from datetime import datetime
 from typing import Optional, Dict, Any, List
 
+# DB module is required by auth and most API routes; import it independently so
+# it remains available even if an optional module import below fails.
+import db as db_store
+
 # Import email and extraction components
 try:
     from enhanced_emailservice import EmailService, create_email_service_from_env
@@ -30,7 +34,6 @@ try:
     from preferencemanager import PreferenceManager
     from extractor import LinkedInLeadExtractor, ExtractedLead
     from script import LinkedInRunner, create_default_search_urls, create_default_job_search_input, strip_html
-    import db as db_store
 except ImportError as e:
     print(f"Warning: Could not import core modules: {e}")
 
