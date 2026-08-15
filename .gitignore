@@ -10,3 +10,8 @@ y
 
 
 configs/scraper_keys.json
+.playwright-mcp
+backups/
+chrome-profile/
+gemini_test.py
+t.py

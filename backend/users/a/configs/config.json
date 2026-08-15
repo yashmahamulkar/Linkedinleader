@@ -1,0 +1,16 @@
+{
+  "auto_email": false,
+  "scraper_keys_path": "C:\\Users\\sanke\\Downloads\\Linkedin\\Linkedinleader\\configs\\scraper_keys.json",
+  "gemini_keys_path": "C:\\Users\\sanke\\Downloads\\Linkedin\\Linkedinleader\\configs\\gemini_keys.json",
+  "max_posts_per_key": 250,
+  "enable_parallel_extraction": true,
+  "log_level": "INFO",
+  "candidate_name": "a",
+  "candidate_email": "a@g.com",
+  "resume_path": "",
+  "smtp_server": "smtp.gmail.com",
+  "smtp_port": 587,
+  "sender_email": "",
+  "sender_password": "",
+  "password_hash": "scrypt:32768:8:1$dnGlOkOQfJgZG8ia$f04d6ad9d616c0233138a0ac5e594d78c05ccac7a8d14bc4c7973c07fdcfee6167f407602507a28c275cc4c68e2c55e5a4ce724d5ca50e2f567e14094f617181"
+}

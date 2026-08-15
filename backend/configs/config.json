@@ -1,0 +1,14 @@
+{
+    "auto_email": true,
+    "scraper_keys_path": "C:/Users/sanke/Downloads/Linkedin/Linkedinleader/configs/scraper_keys.json",
+    "gemini_keys_path": "C:/Users/sanke/Downloads/Linkedin/Linkedinleader/configs/gemini_keys.json",
+    "max_posts_per_key": 250,
+    "enable_parallel_extraction": true,
+    "log_level": "INFO",
+    "candidate_name": "John Doe",
+    "candidate_email": "john.doe@email.com",
+    "resume_path": "path/to/resume.pdf",
+    "default_search_urls_file": "search_urls.json",
+    "output_directory": "./output",
+    "backup_data": true
+}

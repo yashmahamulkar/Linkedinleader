@@ -1,0 +1,16 @@
+{
+  "keys": [
+    {
+      "key": "AIzaSyBp73ntLeBQuOhbYMUmFF1-iAmJAUBykW8",
+      "requests_per_day_limit": 500,
+      "requests_per_minute_limit": 15,
+      "tokens_per_minute_limit": 250000,
+      "requests_today": 528,
+      "tokens_today": 230600,
+      "requests_this_minute": 0,
+      "tokens_this_minute": 0,
+      "last_request_time": "2026-08-15T14:50:12Z",
+      "last_minute_timestamp": "2026-08-15T14:50:12Z"
+    }
+  ]
+}

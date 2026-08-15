@@ -1,0 +1,312 @@
+[
+  {
+    "key": "a8c4ed89d5122ce1",
+    "url": "https://in.indeed.com/viewjob?jk=a8c4ed89d5122ce1",
+    "title": "Principal Software Developer",
+    "jobUrl": "https://careers.opentext.com/us/en/job/53018",
+    "refNum": "53018",
+    "datePublished": "2026-08-10T05:00:00.000Z",
+    "dateOnIndeed": "2026-08-10T16:24:12.021Z",
+    "expired": false,
+    "expirationDate": null,
+    "isRepost": null,
+    "isLatestPost": null,
+    "isPlacement": null,
+    "isUrgentHire": false,
+    "isHighVolumeHiring": false,
+    "language": "en",
+    "location": {
+      "countryName": "India",
+      "countryCode": "IN",
+      "admin1Code": "KA",
+      "admin2Code": "9992029",
+      "admin3Code": "BLR",
+      "admin4Code": "",
+      "city": "",
+      "postalCode": "",
+      "streetAddress": "436 Infinity Building,Intermediate Ring Road",
+      "latitude": 12.976711,
+      "longitude": 77.596596
+    },
+    "employer": {
+      "name": "OpenText",
+      "companyPageUrl": "https://in.indeed.com/cmp/Opentext",
+      "briefDescription": "A global leader in Enterprise Information Management solutions, we enable intelligent & connected enterprises and inspire new ways to work.",
+      "address": "Waterloo, CA",
+      "industry": "Iv1_INTERNET_AND_SOFTWARE",
+      "employeesCount": "10,000+",
+      "revenue": "$1B to $5B (USD)",
+      "ceoName": "James McGourlay, Interim Chief Executive Officer",
+      "ceoPhotoUrl": "https://d2q79iu7y748jz.cloudfront.net/s/_ceophoto/512x512/ce5da443a0ef30e2ebb72c90a29bab1a",
+      "corporateWebsite": "http://www.opentext.com",
+      "logoUrl": "https://d2q79iu7y748jz.cloudfront.net/s/_logo/7e931b0896c9849d15b6cabe5ae5781e",
+      "headerImageUrl": "https://d2q79iu7y748jz.cloudfront.net/s/_headerimage/1960x400/e787fa668886518e823077b83ad15245",
+      "ratingsCount": 627,
+      "ratingsValue": 3.5
+    },
+    "parentEmployer": {
+      "name": "",
+      "companyPageUrl": ""
+    },
+    "attributes": {
+      "47KNR": "Performance tuning",
+      "64VXT": "Azure",
+      "65DTV": "Rust (programming language)",
+      "6XNCP": "Computer Science",
+      "8DY77": "Kubernetes",
+      "9WWNJ": "Enterprise Software",
+      "D3N7S": "Git",
+      "DDKYP": "Google Cloud Platform",
+      "DN4N2": "MongoDB",
+      "EXSNN": "Master's degree",
+      "F5XFG": "Databases",
+      "FADZP": "Microservices",
+      "GFRKJ": "AWS",
+      "HFDVW": "Bachelor's degree",
+      "JP54F": "Distributed systems",
+      "KMQ3F": "Redis",
+      "KXRKK": "RabbitMQ",
+      "MG5WY": "REST",
+      "N4YFP": "Computer networking",
+      "NFXNZ": "DNS",
+      "PP4CH": "APIs",
+      "PYTWK": "Scalability",
+      "T6JDV": "Middleware",
+      "UC5ZW": "SaaS",
+      "WSBNK": "Communication skills",
+      "X62BT": "Python",
+      "Y72YJ": "Debugging",
+      "YSDFB": "MySQL",
+      "Z5DZ5": "High availability"
+    },
+    "employerAttributes": {},
+    "jobTypes": {},
+    "benefits": {},
+    "socialInsurance": {},
+    "occupations": {
+      "E45BS": "Software & Web Architects",
+      "EHPW9": "Technology Occupations",
+      "HJSX6": "Software Development & Architecture Occupations"
+    },
+    "baseSalary": {
+      "min": null,
+      "max": null,
+      "unitOfWork": null,
+      "currencyCode": null
+    },
+    "description": {
+      "text": "AI-First. Future-Driven. Human-Centered.\nAt OpenText, AI is at the heart of everything we do—powering innovation, transforming work, and empowering digital knowledge workers. We're hiring talent that AI can't replace to help us shape the future of information management. Join us.\n\nThe Opportunity\nWe are looking for an experiencedPrincipal Software Developer to provide technical leadership for the Email Channel of our Messaging Channels Platform. In this role, you will define the technical architecture, lead the design and development of enterprise-scale messaging capabilities, and establish engineering best practices for a cloud-native communication platform.\nYou will work closely with Product Management, Architects, Development, Security, and Cloud Operations to deliver highly available, secure, and scalable messaging solutions capable of processing millions of email transactions every day.\nYou are great at\n\n• Providing technical leadership and architectural direction for enterprise messaging solutions.\n• Designing and developing highly scalable, resilient, and cloud-native email delivery platforms.\n• Leading technical design discussions and driving engineering best practices across multiple teams.\n• Building reliable SMTP-based messaging services with high availability, performance, and observability.\n• Solving complex email delivery and infrastructure challenges, including deliverability, routing, security, and performance optimization.\n• Driving architectural decisions, establishing engineering standards, and influencing the long-term technical roadmap.\n• Mentoring senior developers and fostering technical excellence across the organization.\n• Collaborating effectively with Product Management, Architects, Engineering, Security, DevOps, and Cloud Operations to deliver high-quality enterprise software.\n\nWhat it takes\n\n• 15+ years of software engineering experience with significant experience designing distributed enterprise applications.\n• Deep expertise in enterprise email technologies, includingSMTP,KumoMTA,Postfix,PowerMTA,Exim, or similar Message Transfer Agents (MTAs).\n• Strong understanding of email protocols and standards, includingSMTP, MIME, DSN, SPF, DKIM, DMARC, SMTP AUTH, STARTTLS/TLS, and DNS (MX, TXT, PTR).\n• Experience designing and operating high-volume email delivery platforms, including message routing, queue management, retry mechanisms, bounce processing, suppression management, sender reputation, IP warming, throttling, and ISP-specific delivery optimization.\n• Strong programming experience inJava, Python, or Rust (preferred) with expertise in concurrent programming, asynchronous processing, and network programming.\n• Experience building cloud-native microservices usingDocker,Kubernetes, REST APIs, and event-driven architectures leveragingKafka,RabbitMQ, or similar messaging technologies.\n• Experience with public cloud platforms includingMicrosoft Azure, Amazon Web Services (AWS), or Google Cloud Platform (GCP).\n• Knowledge of enterprise messaging platforms, messaging middleware, and event streaming technologies.\n• Experience designing and buildingmulti-tenant SaaS platforms, with strong understanding of tenant isolation, scalability, security, and high availability.\n• Strong knowledge of databases such asPostgreSQL, MySQL, MongoDB, and Redis.\n• Experience with observability technologies includingPrometheus, Grafana, OpenTelemetry, and ELK/OpenSearch.\n• Experience withCI/CD pipelines,Git, Infrastructure as Code, and modern DevOps practices.\n• Excellent debugging, performance tuning, and troubleshooting skills for distributed systems.\n• Strong communication, technical leadership, mentoring, stakeholder management, and cross-functional collaboration skills.\n• Bachelor's or Master's degree in Computer Science or an equivalent discipline.\n\n\n\nOpenText's efforts to build an inclusive work environment go beyond simply complying with applicable laws. Our Employment Equity and Diversity Policy provides direction on maintaining a working environment that is inclusive of everyone, regardless of culture, national origin, race, color, gender, gender identification, sexual orientation, family status, age, veteran status, disability, religion, or other basis protected by applicable laws.\nIf you need assistance and/or a reasonable accommodation due to a disability during the application or recruiting process, please submit a ticket atAsk HR. Our proactive approach fosters collaboration, innovation, and personal growth, enriching OpenText's vibrant workplace.",
+      "html": "AI-First. Future-Driven. Human-Centered.\n<br>At OpenText, AI is at the heart of everything we do—powering innovation, transforming work, and empowering digital knowledge workers. We're hiring talent that AI can't replace to help us shape the future of information management. Join us.\n<br><br>\nThe Opportunity\n<br>We are looking for an experiencedPrincipal Software Developer to provide technical leadership for the Email Channel of our Messaging Channels Platform. In this role, you will define the technical architecture, lead the design and development of enterprise-scale messaging capabilities, and establish engineering best practices for a cloud-native communication platform.\n<br>You will work closely with Product Management, Architects, Development, Security, and Cloud Operations to deliver highly available, secure, and scalable messaging solutions capable of processing millions of email transactions every day.\n<br>You are great at\n<br><br>\n<ul>\n<li>Providing technical leadership and architectural direction for enterprise messaging solutions.</li>\n<li>Designing and developing highly scalable, resilient, and cloud-native email delivery platforms.</li>\n<li>Leading technical design discussions and driving engineering best practices across multiple teams.</li>\n<li>Building reliable SMTP-based messaging services with high availability, performance, and observability.</li>\n<li>Solving complex email delivery and infrastructure challenges, including deliverability, routing, security, and performance optimization.</li>\n<li>Driving architectural decisions, establishing engineering standards, and influencing the long-term technical roadmap.</li>\n<li>Mentoring senior developers and fostering technical excellence across the organization.</li>\n<li>Collaborating effectively with Product Management, Architects, Engineering, Security, DevOps, and Cloud Operations to deliver high-quality enterprise software.</li>\n</ul>\nWhat it takes\n<br><br>\n<ul>\n<li>15+ years of software engineering experience with significant experience designing distributed enterprise applications.</li>\n<li>Deep expertise in enterprise email technologies, includingSMTP,KumoMTA,Postfix,PowerMTA,Exim, or similar Message Transfer Agents (MTAs).</li>\n<li>Strong understanding of email protocols and standards, includingSMTP, MIME, DSN, SPF, DKIM, DMARC, SMTP AUTH, STARTTLS/TLS, and DNS (MX, TXT, PTR).</li>\n<li>Experience designing and operating high-volume email delivery platforms, including message routing, queue management, retry mechanisms, bounce processing, suppression management, sender reputation, IP warming, throttling, and ISP-specific delivery optimization.</li>\n<li>Strong programming experience inJava, Python, or Rust (preferred) with expertise in concurrent programming, asynchronous processing, and network programming.</li>\n<li>Experience building cloud-native microservices usingDocker,Kubernetes, REST APIs, and event-driven architectures leveragingKafka,RabbitMQ, or similar messaging technologies.</li>\n<li>Experience with public cloud platforms includingMicrosoft Azure, Amazon Web Services (AWS), or Google Cloud Platform (GCP).</li>\n<li>Knowledge of enterprise messaging platforms, messaging middleware, and event streaming technologies.</li>\n<li>Experience designing and buildingmulti-tenant SaaS platforms, with strong understanding of tenant isolation, scalability, security, and high availability.</li>\n<li>Strong knowledge of databases such asPostgreSQL, MySQL, MongoDB, and Redis.</li>\n<li>Experience with observability technologies includingPrometheus, Grafana, OpenTelemetry, and ELK/OpenSearch.</li>\n<li>Experience withCI/CD pipelines,Git, Infrastructure as Code, and modern DevOps practices.</li>\n<li>Excellent debugging, performance tuning, and troubleshooting skills for distributed systems.</li>\n<li>Strong communication, technical leadership, mentoring, stakeholder management, and cross-functional collaboration skills.</li>\n<li>Bachelor's or Master's degree in Computer Science or an equivalent discipline.</li>\n</ul>\nOpenText's efforts to build an inclusive work environment go beyond simply complying with applicable laws. Our Employment Equity and Diversity Policy provides direction on maintaining a working environment that is inclusive of everyone, regardless of culture, national origin, race, color, gender, gender identification, sexual orientation, family status, age, veteran status, disability, religion, or other basis protected by applicable laws.\n<br>If you need assistance and/or a reasonable accommodation due to a disability during the application or recruiting process, please submit a ticket atAsk HR. Our proactive approach fosters collaboration, innovation, and personal growth, enriching OpenText's vibrant workplace."
+    }
+  },
+  {
+    "key": "ed664dc00b607f63",
+    "url": "https://in.indeed.com/viewjob?jk=ed664dc00b607f63",
+    "title": "Senior Software Engineer",
+    "jobUrl": "https://thomsonreuters.wd5.myworkdayjobs.com/en-US/External_Career_Site/job/India-Bengaluru-Karnataka/Senior-Software-Engineer_JREQ202626",
+    "refNum": "Senior-Software-Engineer_JREQ202626",
+    "datePublished": "2026-08-10T05:00:00.000Z",
+    "dateOnIndeed": "2026-08-10T16:24:06.364Z",
+    "expired": false,
+    "expirationDate": 1788156000000,
+    "isRepost": null,
+    "isLatestPost": null,
+    "isPlacement": null,
+    "isUrgentHire": false,
+    "isHighVolumeHiring": false,
+    "language": "en",
+    "location": {
+      "countryName": "India",
+      "countryCode": "IN",
+      "admin1Code": "KA",
+      "admin2Code": "9992029",
+      "admin3Code": "BLR",
+      "admin4Code": "",
+      "city": "",
+      "postalCode": "",
+      "streetAddress": "",
+      "latitude": 12.976711,
+      "longitude": 77.596596
+    },
+    "employer": {
+      "name": "Thomson Reuters",
+      "companyPageUrl": "https://in.indeed.com/cmp/Thomson-Reuters",
+      "briefDescription": "Thomson Reuters provides professionals with the intelligence, technology and human expertise they need to find trusted answers.",
+      "address": "Toronto, ON",
+      "industry": "",
+      "employeesCount": "10,000+",
+      "revenue": "$5B to $10B (USD)",
+      "ceoName": "Steve Hasker ",
+      "ceoPhotoUrl": "https://d2q79iu7y748jz.cloudfront.net/s/_ceophoto/512x512/cd2f18d6607e8d401b0150d9da2425d9",
+      "corporateWebsite": "http://www.thomsonreuters.com",
+      "logoUrl": "https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/256x256/23bc0e691fd6e10460f36a6de4ce8b02",
+      "headerImageUrl": "https://d2q79iu7y748jz.cloudfront.net/s/_headerimage/1960x400/18022fc9ddbca004b05cc3f815e42243",
+      "ratingsCount": 4258,
+      "ratingsValue": 3.9
+    },
+    "parentEmployer": {
+      "name": "",
+      "companyPageUrl": ""
+    },
+    "attributes": {
+      "64VXT": "Azure",
+      "84K74": "React",
+      "9VXTC": "Software deployment",
+      "AP3T4": "C#",
+      "CCJPX": "Microsoft SQL Server",
+      "CF3CP": "Full-time",
+      "CH5MX": "NoSQL",
+      "D3N7S": "Git",
+      "DMKN3": "Research",
+      "EHNJH": ".NET",
+      "F5HR5": "Application development",
+      "G3MD5": "OOP",
+      "GGXEU": "Analysis skills",
+      "JB2WC": "JavaScript",
+      "MG5WY": "REST",
+      "N83EH": "Work from home",
+      "NGEEK": "Angular",
+      "PAGS7": "Software development",
+      "PAXZC": "Hybrid work",
+      "PP4CH": "APIs",
+      "Q5R7N": "Interviewing",
+      "SMJ38": "Unit testing",
+      "UJF52": "AI",
+      "WD7PP": "TypeScript",
+      "ZMF9U": "SDLC",
+      "ZXTQ4": "Design patterns"
+    },
+    "employerAttributes": {
+      "CF3CP": "Full-time"
+    },
+    "jobTypes": {
+      "CF3CP": "Full-time"
+    },
+    "benefits": {
+      "N83EH": "Work from home"
+    },
+    "socialInsurance": {},
+    "occupations": {
+      "5NN53": "Software Development Occupations",
+      "EHPW9": "Technology Occupations",
+      "HJSX6": "Software Development & Architecture Occupations"
+    },
+    "baseSalary": {
+      "min": null,
+      "max": null,
+      "unitOfWork": null,
+      "currencyCode": null
+    },
+    "description": {
+      "text": "Job Description:\nAs a Senior Software Engineer, you will play a key role in designing and delivering high‑quality software solutions to solve complex business problems. You will be expected to work independently with minimal supervision, while collaborating effectively with cross‑functional teams. This role requires strong analytical skills, solid engineering practices, and a customer‑focused mindset. You will contribute across multiple facets of the project lifecycle in a fast‑paced, growth‑oriented environment.\n\nAbout the Role:\nIn this opportunity as Senior Software Engineer, you will:\n\nDesign, develop, and maintain software solutions by studying information needs, systems flow, data usage, and work processes, and by engaging with users and stakeholders.\n\nFollow and enhance the software development lifecycle, including requirements analysis, design, implementation, testing, deployment, and support.\n\nDetermine operational feasibility by evaluating analysis, problem definition, requirements, solution options, and proposed implementations.\n\nDocument and demonstrate solutions by creating technical documentation, flowcharts, layouts, diagrams, charts, code comments, and clear, maintainable code.\n\nPrepare, configure, and install solutions by defining and designing system specifications, standards, and programming approaches.\n\nImprove operations by conducting systems analysis and recommending enhancements to applications, processes, policies, and procedures.\n\nSafeguard systems and data by following secure coding practices and ensuring confidential handling of information.\n\nProvide insights by collecting, analysing, and summarizing development and service issues, and contributing to continuous improvement.\n\nDevelop high‑quality software that meets user needs in terms of functionality, performance, and usability.\n\nCollaborate with team members to brainstorm, prototype, and build new features and products.\n\nContribute to the growth of the engineering team by participating in interviewing, onboarding, and knowledge‑sharing activities.\n\nMake informed, data‑driven decisions quickly and take ownership of services and applications operating at scale.\n\nWork collaboratively and constructively with others to achieve team and organizational goals.\n\nDemonstrate persistence and creativity in solving complex technical and product problems.\n\nOperate effectively under pressure and remain calm and solution‑oriented in critical situations.\n\nStay current with modern development practices, tools, and frameworks, and advocate for engineering excellence.\n\nShow passion for technology, with a strong interest in open‑source tools, frameworks, and libraries.\n\nUnderstand business needs and translate them into robust, scalable technical solutions and tools.\n\nAbout You:\nYou're a fit for the role of Senior Software Engineer if your background includes:\n\n7+ years of experience as a software development with professional web application development.\n\nStrong hands‑on experience with .NET, C#, SQL Server, OOPS, React JS, JavaScript, Typescript, Microservices, Azure Cloud, Artificial Intelligence Technologies; Asynchronous Programming; Dependency Injection; Design Patterns; Datadog, NoSQL Databases; Problem Solving; RESTful API Design; Software Development; Unit Testing.\n\nSolid technical foundation with a strong understanding and practical application of OOP and SOLID principles.\n\nExperience developing backend services and APIs in C#, and front‑end components using modern frameworks such as Angular and React.\n\nAbility to research, evaluate, and implement solutions to algorithmic, performance, and platform problems.\n\nProven experience building and delivering complex web systems into production environments.\n\nDemonstrated ability to take a project from requirements scoping through design, implementation, testing, deployment, and support.\n\nExperience working with mission‑critical, high‑availability (24x7) systems.\n\nFamiliarity with professional software engineering best practices including coding standards, code reviews, source control (e.g., Git), build and release pipelines, automated testing, and monitoring/operations.\n\nStrong desire and ability to learn new technologies, frameworks, and tools as needed.\n\n#LI-AD2\n\nWhat’s in it For You?\n\nHybrid Work Model: We’ve adopted a flexible hybrid working environment (2-3 days a week in the office depending on the role) for our office-based roles while delivering a seamless experience that is digitally and physically connected.\n\nFlexibility & Work-Life Balance: Flex My Way is a set of supportive workplace policies designed to help manage personal and professional responsibilities, whether caring for family, giving back to the community, or finding time to refresh and reset. This builds upon our flexible work arrangements, including work from anywhere for up to 8 weeks per year, empowering employees to achieve a better work-life balance.\n\nCareer Development and Growth: By fostering a culture of continuous learning and skill development, we prepare our talent to tackle tomorrow’s challenges and deliver real-world solutions. Our Grow My Way programming and skills-first approach ensures you have the tools and knowledge to grow, lead, and thrive in an AI-enabled future.\n\nIndustry Competitive Benefits: We offer comprehensive benefit plans to include flexible vacation, two company-wide Mental Health Days off, access to the Headspace app, retirement savings, tuition reimbursement, employee incentive programs, and resources for mental, physical, and financial wellbeing.\n\nCulture: Globally recognized, award-winning reputation for inclusion and belonging, flexibility, work-life balance, and more. We live by our values: Obsess over our Customers, Compete to Win, Challenge (Y)our Thinking, Act Fast / Learn Fast, and Stronger Together.\n\nSocial Impact: Make an impact in your community with our Social Impact Institute. We offer employees two paid volunteer days off annually and opportunities to get involved with pro-bono consulting projects and Environmental, Social, and Governance (ESG) initiatives.\n\nMaking a Real-World Impact: We are one of the few companies globally that helps its customers pursue justice, truth, and transparency. Together, with the professionals and institutions we serve, we help uphold the rule of law, turn the wheels of commerce, catch bad actors, report the facts, and provide trusted, unbiased information to people all over the world.\n\nAbout Us\n\nThomson Reuters informs the way forward by bringing together the trusted content and technology that people and organizations need to make the right decisions. We serve professionals across legal, tax, accounting, compliance, government, and media. Our products combine highly specialized software and insights to empower professionals with the data, intelligence, and solutions needed to make informed decisions, and to help institutions in their pursuit of justice, truth, and transparency. Reuters, part of Thomson Reuters, is a world leading provider of trusted journalism and news.\n\nWe are powered by the talents of 26,000 employees across more than 70 countries, where everyone has a chance to contribute and grow professionally in flexible work environments. At a time when objectivity, accuracy, fairness, and transparency are under attack, we consider it our duty to pursue them. Sound exciting? Join us and help shape the industries that move society forward.\n\nAs a global business, we rely on the unique backgrounds, perspectives, and experiences of all employees to deliver on our business goals. To ensure we can do that, we seek talented, qualified employees in all our operations around the world regardless of race, color, sex/gender, including pregnancy, gender identity and expression, national origin, religion, sexual orientation, disability, age, marital status, citizen status, veteran status, or any other protected classification under applicable law. Thomson Reuters is proud to be an Equal Employment Opportunity Employer providing a drug-free workplace.\n\nWe also make reasonable accommodations for qualified individuals with disabilities and for sincerely held religious beliefs in accordance with applicable law. More information on requesting an accommodation here .\n\nLearn more on how to protect yourself from fraudulent job postings here .\n\nMore information about Thomson Reuters can be found on thomsonreuters.com.",
+      "html": "<div><p><b>Job Description:\n</b><br>\nAs a Senior Software Engineer, you will play a key role in designing and delivering high‑quality software solutions to solve complex business problems. You will be expected to work independently with minimal supervision, while collaborating effectively with cross‑functional teams. This role requires strong analytical skills, solid engineering practices, and a customer‑focused mindset. You will contribute across multiple facets of the project lifecycle in a fast‑paced, growth‑oriented environment.\n<br>\n<br>\n<b>About the Role:\n</b><br>\nIn this opportunity as Senior Software Engineer, you will:\n</p><ul><li><p>Design, develop, and maintain software solutions by studying information needs, systems flow, data usage, and work processes, and by engaging with users and stakeholders.\n</p></li><li><p>Follow and enhance the software development lifecycle, including requirements analysis, design, implementation, testing, deployment, and support.\n</p></li><li><p>Determine operational feasibility by evaluating analysis, problem definition, requirements, solution options, and proposed implementations.\n</p></li><li><p>Document and demonstrate solutions by creating technical documentation, flowcharts, layouts, diagrams, charts, code comments, and clear, maintainable code.\n</p></li><li><p>Prepare, configure, and install solutions by defining and designing system specifications, standards, and programming approaches.\n</p></li><li><p>Improve operations by conducting systems analysis and recommending enhancements to applications, processes, policies, and procedures.\n</p></li><li><p>Safeguard systems and data by following secure coding practices and ensuring confidential handling of information.\n</p></li><li><p>Provide insights by collecting, analysing, and summarizing development and service issues, and contributing to continuous improvement.\n</p></li><li><p>Develop high‑quality software that meets user needs in terms of functionality, performance, and usability.\n</p></li><li><p>Collaborate with team members to brainstorm, prototype, and build new features and products.\n</p></li><li><p>Contribute to the growth of the engineering team by participating in interviewing, onboarding, and knowledge‑sharing activities.\n</p></li><li><p>Make informed, data‑driven decisions quickly and take ownership of services and applications operating at scale.\n</p></li><li><p>Work collaboratively and constructively with others to achieve team and organizational goals.\n</p></li><li><p>Demonstrate persistence and creativity in solving complex technical and product problems.\n</p></li><li><p>Operate effectively under pressure and remain calm and solution‑oriented in critical situations.\n</p></li><li><p>Stay current with modern development practices, tools, and frameworks, and advocate for engineering excellence.\n</p></li><li><p>Show passion for technology, with a strong interest in open‑source tools, frameworks, and libraries.\n</p></li><li><p>Understand business needs and translate them into robust, scalable technical solutions and tools.<br>\n</p></li></ul><p><br>\n<b>About You:\n</b><br>\nYou're a fit for the role of Senior Software Engineer if your background includes:\n</p><ul><li><p>7+ years of experience as a software development with professional web application development.\n</p></li><li><p>Strong hands‑on experience with <b>.NET, C#, SQL Server, OOPS, React JS, JavaScript, Typescript, Microservices, Azure Cloud, Artificial Intelligence Technologies; Asynchronous Programming; Dependency Injection; Design Patterns; Datadog, NoSQL Databases; Problem Solving; RESTful API Design; Software Development; Unit Testing.\n</b></p></li><li><p>Solid technical foundation with a strong understanding and practical application of OOP and SOLID principles.\n</p></li><li><p>Experience developing backend services and APIs in C#, and front‑end components using modern frameworks such as Angular and React.\n</p></li><li><p>Ability to research, evaluate, and implement solutions to algorithmic, performance, and platform problems.\n</p></li><li><p>Proven experience building and delivering complex web systems into production environments.\n</p></li><li><p>Demonstrated ability to take a project from requirements scoping through design, implementation, testing, deployment, and support.\n</p></li><li><p>Experience working with mission‑critical, high‑availability (24x7) systems.\n</p></li><li><p>Familiarity with professional software engineering best practices including coding standards, code reviews, source control (e.g., Git), build and release pipelines, automated testing, and monitoring/operations.\n</p></li><li><p>Strong desire and ability to learn new technologies, frameworks, and tools as needed.\n</p></li></ul><p></p><h3 class=\"jobSectionHeader\"><b>#LI-AD2\n</b></h3><p></p><p><b>What&rsquo;s in it For You?\n</b></p><div><div><div><div><ul><li><p><b>Hybrid Work Model: </b>We&rsquo;ve adopted a flexible hybrid working environment (2-3 days a week in the office depending on the role) for our office-based roles while delivering a seamless experience that is digitally and physically connected.\n</p></li><li><p><b>Flexibility &amp; Work-Life Balance: </b>Flex My Way is a set of supportive workplace policies designed to help manage personal and professional responsibilities, whether caring for family, giving back to the community, or finding time to refresh and reset. This builds upon our flexible work arrangements, including work from anywhere for up to 8 weeks per year, empowering employees to achieve a better work-life balance.\n</p></li><li><p><b>Career Development and Growth: </b>By fostering a culture of continuous learning and skill development, we prepare our talent to tackle tomorrow&rsquo;s challenges and deliver real-world solutions. Our Grow My Way programming and skills-first approach ensures you have the tools and knowledge to grow, lead, and thrive in an AI-enabled future.\n</p></li><li><p><b>Industry Competitive Benefits: </b>We offer comprehensive benefit plans to include flexible vacation, two company-wide Mental Health Days off, access to the Headspace app, retirement savings, tuition reimbursement, employee incentive programs, and resources for mental, physical, and financial wellbeing.\n</p></li><li><p><b>Culture: </b>Globally recognized, award-winning reputation for inclusion and belonging, flexibility, work-life balance, and more. We live by our values: Obsess over our Customers, Compete to Win, Challenge (Y)our Thinking, Act Fast / Learn Fast, and Stronger Together.\n</p></li><li><p><b>Social Impact: </b>Make an impact in your community with our Social Impact Institute. We offer employees two paid volunteer days off annually and opportunities to get involved with pro-bono consulting projects and Environmental, Social, and Governance (ESG) initiatives.\n</p></li><li><p><b>Making a Real-World Impact: </b>We are one of the few companies globally that helps its customers pursue justice, truth, and transparency. Together, with the professionals and institutions we serve, we help uphold the rule of law, turn the wheels of commerce, catch bad actors, report the facts, and provide trusted, unbiased information to people all over the world.\n</p></li></ul></div></div></div></div><p></p><p><b>About Us\n</b></p><p></p><p>Thomson Reuters informs the way forward by bringing together the trusted content and technology that people and organizations need to make the right decisions. We serve professionals across legal, tax, accounting, compliance, government, and media. Our products combine highly specialized software and insights to empower professionals with the data, intelligence, and solutions needed to make informed decisions, and to help institutions in their pursuit of justice, truth, and transparency. Reuters, part of Thomson Reuters, is a world leading provider of trusted journalism and news.\n</p><p></p><p>We are powered by the talents of 26,000 employees across more than 70 countries, where everyone has a chance to contribute and grow professionally in flexible work environments. At a time when objectivity, accuracy, fairness, and transparency are under attack, we consider it our duty to pursue them. Sound exciting? Join us and help shape the industries that move society forward.\n</p><p></p><p>As a global business, we rely on the unique backgrounds, perspectives, and experiences of all employees to deliver on our business goals. To ensure we can do that, we seek talented, qualified employees in all our operations around the world regardless of race, color, sex/gender, including pregnancy, gender identity and expression, national origin, religion, sexual orientation, disability, age, marital status, citizen status, veteran status, or any other protected classification under applicable law. Thomson Reuters is proud to be an Equal Employment Opportunity Employer providing a drug-free workplace.\n</p><p></p><p>We also make reasonable accommodations for qualified individuals with disabilities and for sincerely held religious beliefs in accordance with applicable law. More information on requesting an accommodation here .\n</p><p></p><p>Learn more on how to protect yourself from fraudulent job postings here .\n</p><p></p><p>More information about Thomson Reuters can be found on thomsonreuters.com.</p></div>"
+    }
+  },
+  {
+    "key": "f60dea8368c1d0f2",
+    "url": "https://in.indeed.com/viewjob?jk=f60dea8368c1d0f2",
+    "title": "Software Engineer I",
+    "jobUrl": "https://thomsonreuters.wd5.myworkdayjobs.com/en-US/External_Career_Site/job/India-Bengaluru-Karnataka/Software-Engineer-I_JREQ202649",
+    "refNum": "Software-Engineer-I_JREQ202649",
+    "datePublished": "2026-08-10T05:00:00.000Z",
+    "dateOnIndeed": "2026-08-10T16:24:05.213Z",
+    "expired": false,
+    "expirationDate": 1788156000000,
+    "isRepost": null,
+    "isLatestPost": null,
+    "isPlacement": null,
+    "isUrgentHire": false,
+    "isHighVolumeHiring": false,
+    "language": "en",
+    "location": {
+      "countryName": "India",
+      "countryCode": "IN",
+      "admin1Code": "KA",
+      "admin2Code": "9992029",
+      "admin3Code": "BLR",
+      "admin4Code": "",
+      "city": "",
+      "postalCode": "",
+      "streetAddress": "",
+      "latitude": 12.976711,
+      "longitude": 77.596596
+    },
+    "employer": {
+      "name": "Thomson Reuters",
+      "companyPageUrl": "https://in.indeed.com/cmp/Thomson-Reuters",
+      "briefDescription": "Thomson Reuters provides professionals with the intelligence, technology and human expertise they need to find trusted answers.",
+      "address": "Toronto, ON",
+      "industry": "",
+      "employeesCount": "10,000+",
+      "revenue": "$5B to $10B (USD)",
+      "ceoName": "Steve Hasker ",
+      "ceoPhotoUrl": "https://d2q79iu7y748jz.cloudfront.net/s/_ceophoto/512x512/cd2f18d6607e8d401b0150d9da2425d9",
+      "corporateWebsite": "http://www.thomsonreuters.com",
+      "logoUrl": "https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/256x256/23bc0e691fd6e10460f36a6de4ce8b02",
+      "headerImageUrl": "https://d2q79iu7y748jz.cloudfront.net/s/_headerimage/1960x400/18022fc9ddbca004b05cc3f815e42243",
+      "ratingsCount": 4258,
+      "ratingsValue": 3.9
+    },
+    "parentEmployer": {
+      "name": "",
+      "companyPageUrl": ""
+    },
+    "attributes": {
+      "2QMNT": "BCS",
+      "2V8EX": "CI/CD",
+      "4WK64": "Power BI",
+      "6XNCP": "Computer Science",
+      "8HSB4": "Web development",
+      "CBW7D": "Test automation",
+      "CCJPX": "Microsoft SQL Server",
+      "CF3CP": "Full-time",
+      "CH5MX": "NoSQL",
+      "CSKPN": "Selenium",
+      "EBFTN": "Tableau",
+      "ED3AN": "Performance testing",
+      "FGY89": "SQL",
+      "GFRKJ": "AWS",
+      "GGXEU": "Analysis skills",
+      "HFDVW": "Bachelor's degree",
+      "HT6WW": "Machine learning",
+      "J86KV": "Cloud development",
+      "JCKB4": "PostgreSQL",
+      "KKS5B": "Continuous integration",
+      "N83EH": "Work from home",
+      "NGEEK": "Angular",
+      "PAXZC": "Hybrid work",
+      "QE236": "Agile",
+      "SNF7W": "Data science",
+      "TZ7UU": "Business requirements",
+      "UJF52": "AI",
+      "W736J": "Jenkins",
+      "WSBNK": "Communication skills",
+      "ZPP7S": "Information Technology"
+    },
+    "employerAttributes": {
+      "CF3CP": "Full-time"
+    },
+    "jobTypes": {
+      "CF3CP": "Full-time"
+    },
+    "benefits": {
+      "N83EH": "Work from home"
+    },
+    "socialInsurance": {},
+    "occupations": {
+      "EHPW9": "Technology Occupations",
+      "HJSX6": "Software Development & Architecture Occupations",
+      "KPD97": "Software Quality Assurance Occupations"
+    },
+    "baseSalary": {
+      "min": null,
+      "max": null,
+      "unitOfWork": null,
+      "currencyCode": null
+    },
+    "description": {
+      "text": "QA Engineers are entry/mid-level professionals that monitor and fine tune automation framework capabilities while driving innovative automated testing solutions focused on the customer in a team-oriented environment. A QA Engineer may assist their colleagues and more junior QA Engineer team members by solving problems, providing technical guidance, training and mentoring others. Exceptional attention to detail, strong analytical skills, excellent communication skills and deep technical ability in performance testing, automation testing methodologies, tools and processes within an agile environment will be key for success.\n\nAbout the Role:\n\n• Delivers testing solutions for a single product and/or participates in complex projects\n• May lead straight forward projects that are not complex in nature\n• Operates with moderate level of guidance and direction\n\n• Immediate project or QA/Software Development Engineer team\n• Engages with cross functional teams to execute\n• Developing QA Engineer professional\n• Bachelor’s degree in Computer Science, Engineering, Information Technology or Business-related degree preferred or equivalent experience\n• 3+ years of software QA testing experience\n• Detects, highlights and tracks bugs\n• Performs activities according to quality criteria\n• Delivers testing solutions for a single product and/or participates in complex projects\n• Proven ability to work within an agile environment\n• Actively and collaboratively contributes to meetings, processes, and agile ceremonies with cross functional teams\n• Ensures that risks are identified\n• Establishes and maintains ongoing relationships with key customers\n• Understands the markets we serve, our products and customers\n• Knowledge of business rules related to the company's products\n• Ability to understand business requirements and convert them into test cases\n• Able to interpret customer scenarios and convert them into manual and/or automated test scripts\n• Understands product strategy & objectives. Aligns QA Engineering work accordingly.\n• Addresses routine objections and concerns with limited support; knows when escalation is needed\n• Creates operating mechanisms to ensure all voices are heard within the project team; commits to team decisions once made.\n• Identifies opportunities to improve business and processes\n• Shares information clearly and articulately via all mediums to all audiences\n• Learns and adapts; bounces back from setbacks.\n\nAbout You:\n\n• Test automation engineering experience with Selenium, Postman, Protractor and JMeter testing tools with 3+ yrs of Experience.\n• Experience testing Web Applications in cross-browser and cross-device using automated test tools\n• Experience in testing data persistence systems using both SQL and NoSQL DBMS. [MSSQL, PostgreSQL, Dynamo]\n• Experience with CI/CD pipelines with Jenkins or AzureDevOps\n• Experience leveraging the following technologies or competitive technologies: Angular, Application Performance Management, Kibana, PowerBI, Tableau or Quicksight, AWS Cloud development experience a plus, data Science: Machine Learning / Artificial Intelligence\n• Experience with developing both front-end and back-end automation tests\n• Understanding of security best practices for web development\n• Knowledge in agile methodologies\n\n#LI-AD2\n\nWhat’s in it For You?\n\nHybrid Work Model: We’ve adopted a flexible hybrid working environment (2-3 days a week in the office depending on the role) for our office-based roles while delivering a seamless experience that is digitally and physically connected.\n\nFlexibility & Work-Life Balance: Flex My Way is a set of supportive workplace policies designed to help manage personal and professional responsibilities, whether caring for family, giving back to the community, or finding time to refresh and reset. This builds upon our flexible work arrangements, including work from anywhere for up to 8 weeks per year, empowering employees to achieve a better work-life balance.\n\nCareer Development and Growth: By fostering a culture of continuous learning and skill development, we prepare our talent to tackle tomorrow’s challenges and deliver real-world solutions. Our Grow My Way programming and skills-first approach ensures you have the tools and knowledge to grow, lead, and thrive in an AI-enabled future.\n\nIndustry Competitive Benefits: We offer comprehensive benefit plans to include flexible vacation, two company-wide Mental Health Days off, access to the Headspace app, retirement savings, tuition reimbursement, employee incentive programs, and resources for mental, physical, and financial wellbeing.\n\nCulture: Globally recognized, award-winning reputation for inclusion and belonging, flexibility, work-life balance, and more. We live by our values: Obsess over our Customers, Compete to Win, Challenge (Y)our Thinking, Act Fast / Learn Fast, and Stronger Together.\n\nSocial Impact: Make an impact in your community with our Social Impact Institute. We offer employees two paid volunteer days off annually and opportunities to get involved with pro-bono consulting projects and Environmental, Social, and Governance (ESG) initiatives.\n\nMaking a Real-World Impact: We are one of the few companies globally that helps its customers pursue justice, truth, and transparency. Together, with the professionals and institutions we serve, we help uphold the rule of law, turn the wheels of commerce, catch bad actors, report the facts, and provide trusted, unbiased information to people all over the world.\n\nAbout Us\n\nThomson Reuters informs the way forward by bringing together the trusted content and technology that people and organizations need to make the right decisions. We serve professionals across legal, tax, accounting, compliance, government, and media. Our products combine highly specialized software and insights to empower professionals with the data, intelligence, and solutions needed to make informed decisions, and to help institutions in their pursuit of justice, truth, and transparency. Reuters, part of Thomson Reuters, is a world leading provider of trusted journalism and news.\n\nWe are powered by the talents of 26,000 employees across more than 70 countries, where everyone has a chance to contribute and grow professionally in flexible work environments. At a time when objectivity, accuracy, fairness, and transparency are under attack, we consider it our duty to pursue them. Sound exciting? Join us and help shape the industries that move society forward.\n\nAs a global business, we rely on the unique backgrounds, perspectives, and experiences of all employees to deliver on our business goals. To ensure we can do that, we seek talented, qualified employees in all our operations around the world regardless of race, color, sex/gender, including pregnancy, gender identity and expression, national origin, religion, sexual orientation, disability, age, marital status, citizen status, veteran status, or any other protected classification under applicable law. Thomson Reuters is proud to be an Equal Employment Opportunity Employer providing a drug-free workplace.\n\nWe also make reasonable accommodations for qualified individuals with disabilities and for sincerely held religious beliefs in accordance with applicable law. More information on requesting an accommodation here .\n\nLearn more on how to protect yourself from fraudulent job postings here .\n\nMore information about Thomson Reuters can be found on thomsonreuters.com.",
+      "html": "<div><p>QA Engineers are entry/mid-level professionals that monitor and fine tune automation framework capabilities while driving innovative automated testing solutions focused on the customer in a team-oriented environment. A QA Engineer may assist their colleagues and more junior QA Engineer team members by solving problems, providing technical guidance, training and mentoring others. Exceptional attention to detail, strong analytical skills, excellent communication skills and deep technical ability in performance testing, automation testing methodologies, tools and processes within an agile environment will be key for success.\n</p><p></p><p><b>About the Role:<br>\n</b></p><div><br>\n<ul><li>Delivers testing solutions for a single product and/or participates in complex projects\n</li><li>May lead straight forward projects that are not complex in nature\n</li><li>Operates with moderate level of guidance and direction\n</li></ul></div><ul><li>Immediate project or QA/Software Development Engineer team\n</li><li>Engages with cross functional teams to execute\n</li><li>Developing QA Engineer professional\n</li><li>Bachelor&rsquo;s degree in Computer Science, Engineering, Information Technology or Business-related degree preferred or equivalent experience\n</li><li>3+ years of software QA testing experience\n</li><li>Detects, highlights and tracks bugs\n</li><li>Performs activities according to quality criteria\n</li><li>Delivers testing solutions for a single product and/or participates in complex projects\n</li><li>Proven ability to work within an agile environment\n</li><li>Actively and collaboratively contributes to meetings, processes, and agile ceremonies with cross functional teams\n</li><li>Ensures that risks are identified\n</li><li>Establishes and maintains ongoing relationships with key customers\n</li><li>Understands the markets we serve, our products and customers\n</li><li>Knowledge of business rules related to the company's products\n</li><li>Ability to understand business requirements and convert them into test cases\n</li><li>Able to interpret customer scenarios and convert them into manual and/or automated test scripts\n</li><li>Understands product strategy &amp; objectives. Aligns QA Engineering work accordingly.\n</li><li>Addresses routine objections and concerns with limited support; knows when escalation is needed\n</li><li>Creates operating mechanisms to ensure all voices are heard within the project team; commits to team decisions once made.\n</li><li>Identifies opportunities to improve business and processes\n</li><li>Shares information clearly and articulately via all mediums to all audiences\n</li><li>Learns and adapts; bounces back from setbacks.\n</li></ul><p></p><p><b>About You:<br>\n</b></p><div><br>\n<ul><li>Test automation engineering experience with Selenium, Postman, Protractor and JMeter testing tools with 3+ yrs of Experience.\n</li><li>Experience testing Web Applications in cross-browser and cross-device using automated test tools\n</li><li>Experience in testing data persistence systems using both SQL and NoSQL DBMS. [MSSQL, PostgreSQL, Dynamo]\n</li><li>Experience with CI/CD pipelines with Jenkins or AzureDevOps\n</li><li>Experience leveraging the following technologies or competitive technologies: Angular, Application Performance Management, Kibana, PowerBI, Tableau or Quicksight, AWS Cloud development experience a plus, data Science: Machine Learning / Artificial Intelligence\n</li><li>Experience with developing both front-end and back-end automation tests\n</li><li>Understanding of security best practices for web development\n</li><li>Knowledge in agile methodologies\n</li></ul></div><p></p><p>#LI-AD2\n</p><p></p><p><b>What&rsquo;s in it For You?\n</b></p><div><div><div><div><ul><li><p><b>Hybrid Work Model: </b>We&rsquo;ve adopted a flexible hybrid working environment (2-3 days a week in the office depending on the role) for our office-based roles while delivering a seamless experience that is digitally and physically connected.\n</p></li><li><p><b>Flexibility &amp; Work-Life Balance: </b>Flex My Way is a set of supportive workplace policies designed to help manage personal and professional responsibilities, whether caring for family, giving back to the community, or finding time to refresh and reset. This builds upon our flexible work arrangements, including work from anywhere for up to 8 weeks per year, empowering employees to achieve a better work-life balance.\n</p></li><li><p><b>Career Development and Growth: </b>By fostering a culture of continuous learning and skill development, we prepare our talent to tackle tomorrow&rsquo;s challenges and deliver real-world solutions. Our Grow My Way programming and skills-first approach ensures you have the tools and knowledge to grow, lead, and thrive in an AI-enabled future.\n</p></li><li><p><b>Industry Competitive Benefits: </b>We offer comprehensive benefit plans to include flexible vacation, two company-wide Mental Health Days off, access to the Headspace app, retirement savings, tuition reimbursement, employee incentive programs, and resources for mental, physical, and financial wellbeing.\n</p></li><li><p><b>Culture: </b>Globally recognized, award-winning reputation for inclusion and belonging, flexibility, work-life balance, and more. We live by our values: Obsess over our Customers, Compete to Win, Challenge (Y)our Thinking, Act Fast / Learn Fast, and Stronger Together.\n</p></li><li><p><b>Social Impact: </b>Make an impact in your community with our Social Impact Institute. We offer employees two paid volunteer days off annually and opportunities to get involved with pro-bono consulting projects and Environmental, Social, and Governance (ESG) initiatives.\n</p></li><li><p><b>Making a Real-World Impact: </b>We are one of the few companies globally that helps its customers pursue justice, truth, and transparency. Together, with the professionals and institutions we serve, we help uphold the rule of law, turn the wheels of commerce, catch bad actors, report the facts, and provide trusted, unbiased information to people all over the world.\n</p></li></ul></div></div></div></div><p></p><p><b>About Us\n</b></p><p></p><p>Thomson Reuters informs the way forward by bringing together the trusted content and technology that people and organizations need to make the right decisions. We serve professionals across legal, tax, accounting, compliance, government, and media. Our products combine highly specialized software and insights to empower professionals with the data, intelligence, and solutions needed to make informed decisions, and to help institutions in their pursuit of justice, truth, and transparency. Reuters, part of Thomson Reuters, is a world leading provider of trusted journalism and news.\n</p><p></p><p>We are powered by the talents of 26,000 employees across more than 70 countries, where everyone has a chance to contribute and grow professionally in flexible work environments. At a time when objectivity, accuracy, fairness, and transparency are under attack, we consider it our duty to pursue them. Sound exciting? Join us and help shape the industries that move society forward.\n</p><p></p><p>As a global business, we rely on the unique backgrounds, perspectives, and experiences of all employees to deliver on our business goals. To ensure we can do that, we seek talented, qualified employees in all our operations around the world regardless of race, color, sex/gender, including pregnancy, gender identity and expression, national origin, religion, sexual orientation, disability, age, marital status, citizen status, veteran status, or any other protected classification under applicable law. Thomson Reuters is proud to be an Equal Employment Opportunity Employer providing a drug-free workplace.\n</p><p></p><p>We also make reasonable accommodations for qualified individuals with disabilities and for sincerely held religious beliefs in accordance with applicable law. More information on requesting an accommodation here .\n</p><p></p><p>Learn more on how to protect yourself from fraudulent job postings here .\n</p><p></p><p>More information about Thomson Reuters can be found on thomsonreuters.com.</p></div>"
+    }
+  }
+]

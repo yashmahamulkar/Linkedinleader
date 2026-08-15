@@ -1,0 +1,15 @@
+{
+  "auto_email": false,
+  "scraper_keys_path": "C:\\Users\\sanke\\Downloads\\Linkedin\\Linkedinleader\\configs\\scraper_keys.json",
+  "gemini_keys_path": "C:\\Users\\sanke\\Downloads\\Linkedin\\Linkedinleader\\configs\\gemini_keys.json",
+  "max_posts_per_key": 250,
+  "enable_parallel_extraction": true,
+  "log_level": "INFO",
+  "candidate_name": "Admin",
+  "candidate_email": "your.email@example.com",
+  "resume_path": "",
+  "smtp_server": "smtp.gmail.com",
+  "smtp_port": 587,
+  "sender_email": "",
+  "sender_password": ""
+}
