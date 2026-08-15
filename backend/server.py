@@ -43,6 +43,15 @@ CORS(app, resources={r"/*": {"origins": [r"http://.*:9002", r"https://.*:9002"]}
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Initialize DB at process startup so leadflow.db and tables exist before first request.
+# init_db() is idempotent, so this is safe even when the DB already exists.
+try:
+    if 'db_store' in globals() and db_store is not None:
+        db_store.init_db()
+        logger.info("Database initialized at startup")
+except Exception as e:
+    logger.error(f"Database startup initialization failed: {e}")
+
 # Real status of the last/current background scrape pipeline run, polled by the frontend
 # instead of a fabricated progress bar. Guarded by a lock since the background thread
 # writes it while request handlers read it concurrently.
@@ -251,9 +260,13 @@ def auth_login():
         import json
         import shutil
         data = request.get_json() or {}
-        user_id = data.get("userId", "").strip().lower()
+        raw_user_id = data.get("userId", "")
+        raw_password = data.get("password", "")
+
+        # Guard against null/non-string payload fields to avoid 500s from .strip()
+        user_id = raw_user_id.strip().lower() if isinstance(raw_user_id, str) else ""
         user_id = re.sub(r'[^a-z0-9_]', '', user_id)
-        password = data.get("password", "").strip()
+        password = raw_password.strip() if isinstance(raw_password, str) else ""
         
         if not user_id:
             return jsonify({"success": False, "message": "User ID is required"}), 400
@@ -262,20 +275,27 @@ def auth_login():
 
         # Load hardcoded credentials from users_credentials.json
         credentials = {}
-        credentials_file = PROJECT_ROOT / "users_credentials.json"
-        if os.path.exists(credentials_file):
-            try:
-                with open(credentials_file, "r") as f:
-                    credentials = json.load(f)
-            except Exception as e:
-                logger.error(f"Failed to read users_credentials.json: {e}")
+        credentials_paths = [
+            PROJECT_ROOT / "users_credentials.json",           # legacy location
+            PROJECT_ROOT / "configs" / "users_credentials.json",  # current config folder
+        ]
+        for credentials_file in credentials_paths:
+            if os.path.exists(credentials_file):
+                try:
+                    with open(credentials_file, "r", encoding="utf-8") as f:
+                        loaded = json.load(f)
+                    if isinstance(loaded, dict):
+                        credentials = loaded
+                        break
+                    logger.warning(f"Ignoring credentials file with invalid format (expected object): {credentials_file}")
+                except Exception as e:
+                    logger.error(f"Failed to read credentials file {credentials_file}: {e}")
         
         # Fallback if empty or not found
         if not credentials:
             credentials = {
-                "yash": "yash123",
-                "sanke": "sanke123",
-                "admin": "admin123"
+                "yash": "Lazycat@2004",
+                "rucha": "Lazycat@2003"
             }
 
         if user_id not in credentials:
@@ -304,13 +324,6 @@ def auth_login():
                     if t_file.endswith(".txt") and os.path.isfile(global_templates_dir / t_file):
                         shutil.copy(str(global_templates_dir / t_file), str(user_templates_dir / t_file))
 
-        # Give the user leads immediately: run extraction against whatever raw items have
-        # already been scraped but never processed for this user_id, in the background so
-        # login doesn't block on Gemini calls. Applies to brand-new users AND returning users
-        # who logged in between scrape cycles / after a preference change.
-        thread = threading.Thread(target=provision_user_leads, args=(user_id,), daemon=True)
-        thread.start()
-
         return jsonify({
             "success": True,
             "userId": user_id,
@@ -318,7 +331,7 @@ def auth_login():
             "email": cfg.get("candidate_email", "")
         }), 200
     except Exception as e:
-        logger.error(f"Login error: {e}")
+        logger.exception("Login error")
         return jsonify({"success": False, "message": str(e)}), 500
 
 @app.route('/api/auth/register', methods=['POST'])

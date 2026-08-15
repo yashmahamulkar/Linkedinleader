@@ -13,6 +13,7 @@ unique_filtered_leads.csv / .json / emails_sent.csv files.
 import sqlite3
 import json
 import threading
+import logging
 from pathlib import Path
 from dataclasses import asdict
 from datetime import datetime, timedelta
@@ -24,6 +25,7 @@ DB_PATH = DB_DIR / "leadflow.db"
 
 _init_lock = threading.Lock()
 _initialized = False
+logger = logging.getLogger(__name__)
 
 # Columns on ExtractedLead that are stored as JSON text in SQLite (lists/None -> TEXT)
 _JSON_FIELDS = {"tech_stack", "skills_required", "graduation_years", "experience_level"}
@@ -42,10 +44,36 @@ def init_db():
     """Create tables if they don't exist yet. Safe to call repeatedly/concurrently."""
     global _initialized
     if _initialized:
-        return
+        # Self-heal: if DB file is replaced/corrupted after boot, the in-memory initialized
+        # flag can become stale. Verify a core table still exists before fast-returning.
+        try:
+            conn = get_connection()
+            try:
+                row = conn.execute(
+                    "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'users'"
+                ).fetchone()
+                if row:
+                    return
+                logger.warning("DB flagged initialized but missing 'users' table. Reinitializing schema.")
+            finally:
+                conn.close()
+        except Exception as e:
+            logger.warning(f"DB initialization health check failed. Reinitializing schema: {e}")
+
     with _init_lock:
         if _initialized:
-            return
+            try:
+                conn = get_connection()
+                try:
+                    row = conn.execute(
+                        "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'users'"
+                    ).fetchone()
+                    if row:
+                        return
+                finally:
+                    conn.close()
+            except Exception:
+                pass
         conn = get_connection()
         try:
             conn.executescript(
