@@ -170,6 +170,29 @@ class GlobalPipelineStorageTests(unittest.TestCase):
         self.assertTrue(_lead_matches_user(lead, PreferenceManager(preferences_path=str(first)))[0])
         self.assertFalse(_lead_matches_user(lead, PreferenceManager(preferences_path=str(second)))[0])
 
+    def test_fresher_matching_rejects_sales_and_senior_roles_even_without_role_level(self):
+        from extractor import ExtractedLead
+        from preferencemanager import PreferenceManager
+        from server import _lead_matches_user
+
+        pref_path = Path(self.tmp) / "fresher.json"
+        pref_path.write_text(json.dumps({
+            "preferred_roles": ["Software Developer", "AI/ML Engineer"],
+            "preferred_locations": ["Remote"], "categories": {},
+        }))
+        pref = PreferenceManager(preferences_path=str(pref_path))
+
+        for title, years, role_level in (("Sales Manager", [0, 0], None),
+                                         ("Principal Software Engineer", [0, 0], "Principal"),
+                                         ("Backend Engineer", [5, 8], None)):
+            lead = ExtractedLead(
+                post_urn=title, application_method="link", posting_date="", author_name="",
+                author_profile="", is_job_posting=True, post_category="job",
+                job_title=title, company_name="Example", location="Remote",
+                experience_level=years, role_level=role_level,
+            )
+            self.assertFalse(_lead_matches_user(lead, pref)[0], title)
+
 
 if __name__ == "__main__":
     unittest.main()

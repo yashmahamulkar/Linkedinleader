@@ -380,6 +380,15 @@ class LinkedInLeadExtractor:
         method/contact, URL, internship/fresher indicators, graduation years, eligibility,
         and the post category using the output schema below.
 
+        SENIORITY AND ROLE CLASSIFICATION:
+        - Always populate role_level when the title or text provides evidence.
+        - Principal, Staff, Senior, Lead, Architect, Manager, Director, Head, and Chief roles
+          must not be classified as Internship, Fresher, Entry-level, or Junior.
+        - Sales, Marketing, HR, Recruiting, Support, and Business Development roles must keep
+          their factual job title and must not be classified as software or AI engineering.
+        - Extract explicit experience requirements accurately. Do not turn a senior role into a
+          fresher role merely because the post mentions students or internships elsewhere.
+
         {{format_instructions}}
         """)
 

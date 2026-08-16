@@ -977,6 +977,17 @@ def _lead_matches_user(lead: ExtractedLead, pref: PreferenceManager) -> tuple[bo
         return False, {"reason": "not_job"}
     title = (lead.job_title or "").lower()
     haystack = " ".join([title, lead.company_name or "", *(lead.tech_stack or []), *(lead.skills_required or [])]).lower()
+
+    # These are structured facts extracted by the global AI stage, not a second
+    # user-specific LLM filter. Preferences determine which roles match below.
+    experience = lead.experience_level or []
+    if isinstance(experience, (list, tuple)) and experience:
+        try:
+            if max(int(value) for value in experience if value is not None) > 2:
+                return False, {"reason": "experience"}
+        except (TypeError, ValueError):
+            pass
+
     roles = [r.lower().strip() for r in pref.preferred_roles() if r.strip()]
     categories = pref.categories()
     role_hit = any(r in haystack or any(token in haystack for token in r.split() if len(token) > 2) for r in roles)
@@ -1003,7 +1014,7 @@ def _lead_matches_user(lead: ExtractedLead, pref: PreferenceManager) -> tuple[bo
         location_hit = True
     if not location_hit:
         return False, {"reason": "location"}
-    if lead.role_level and lead.role_level.lower() in {"senior", "mid-level", "lead", "principal"}:
+    if lead.role_level and lead.role_level.lower() in {"senior", "mid-level", "lead", "principal", "staff", "manager"}:
         return False, {"reason": "seniority"}
     reasons = ["job posting", "role/category match"]
     if location_hit:
