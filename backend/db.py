@@ -2,8 +2,8 @@
 
 Single shared database (data/leadflow.db) holding:
   - raw_items: every scraped post/job, once, regardless of which user(s) it gets extracted for.
-  - extraction_attempts: (user_id, raw_item_id) pairs already run through the LLM extractor,
-    so re-running the pipeline never re-spends a Gemini call on the same item for the same user.
+  - global_extractions: one shared extraction/normalization result per raw item.
+  - extraction_attempts: legacy per-user processing markers retained for compatibility.
   - leads: the final structured ExtractedLead rows, one per (user_id, post_urn).
   - users: lightweight profile row per user_id (name/email), created on first login.
 
@@ -100,6 +100,23 @@ def init_db():
                     matched INTEGER NOT NULL DEFAULT 0,
                     PRIMARY KEY (user_id, raw_item_id)
                 );
+
+                CREATE TABLE IF NOT EXISTS global_extractions (
+                    raw_item_id INTEGER PRIMARY KEY,
+                    urn TEXT NOT NULL UNIQUE,
+                    status TEXT NOT NULL DEFAULT 'pending',
+                    extracted_json TEXT,
+                    extracted_at TEXT,
+                    model_provider TEXT,
+                    prompt_version TEXT NOT NULL DEFAULT 'global-v1',
+                    attempts INTEGER NOT NULL DEFAULT 0,
+                    last_error TEXT,
+                    claimed_at TEXT,
+                    FOREIGN KEY (raw_item_id) REFERENCES raw_items(id) ON DELETE CASCADE
+                );
+
+                CREATE INDEX IF NOT EXISTS idx_global_extractions_status
+                    ON global_extractions(status);
 
                 CREATE TABLE IF NOT EXISTS leads (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -291,6 +308,103 @@ def insert_raw_items(items: List[Dict], source: str) -> int:
     finally:
         conn.close()
     return inserted
+
+
+def get_global_extraction_candidates(limit: Optional[int] = None) -> List[Dict]:
+    """Return raw items that do not yet have a completed global extraction.
+
+    A failed item is retryable, but the claim operation below makes retries safe when
+    cron executions overlap.
+    """
+    init_db()
+    conn = get_connection()
+    try:
+        sql = (
+            "SELECT r.id, r.source, r.urn, r.raw_json, r.scraped_at "
+            "FROM raw_items r LEFT JOIN global_extractions e ON e.raw_item_id = r.id "
+            "WHERE e.raw_item_id IS NULL OR e.status IN ('pending', 'failed') "
+            "ORDER BY r.id ASC"
+        )
+        if limit:
+            sql += f" LIMIT {int(limit)}"
+        rows = conn.execute(sql).fetchall()
+        result = []
+        for row in rows:
+            item = json.loads(row["raw_json"])
+            item.update({"_raw_item_id": row["id"], "_source": row["source"], "_urn": row["urn"]})
+            result.append(item)
+        return result
+    finally:
+        conn.close()
+
+
+def claim_global_extraction(raw_item_id: int, urn: str) -> bool:
+    """Atomically claim one item so overlapping workers cannot both call the LLM."""
+    init_db()
+    conn = get_connection()
+    try:
+        conn.execute("BEGIN IMMEDIATE")
+        row = conn.execute(
+            "SELECT status FROM global_extractions WHERE raw_item_id = ?", (raw_item_id,)
+        ).fetchone()
+        if row and row["status"] in ("completed", "processing"):
+            conn.rollback()
+            return False
+        now = datetime.now().isoformat()
+        conn.execute(
+            "INSERT INTO global_extractions "
+            "(raw_item_id, urn, status, attempts, claimed_at) VALUES (?, ?, 'processing', 1, ?) "
+            "ON CONFLICT(raw_item_id) DO UPDATE SET status='processing', attempts=attempts+1, "
+            "claimed_at=excluded.claimed_at, last_error=NULL",
+            (raw_item_id, str(urn), now),
+        )
+        conn.commit()
+        return True
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
+
+
+def save_global_extraction(raw_item_id: int, urn: str, extracted: Optional[Dict],
+                           error: Optional[str] = None, model_provider: str = "gemini"):
+    init_db()
+    conn = get_connection()
+    try:
+        status = "completed" if extracted is not None and not error else "failed"
+        conn.execute(
+            "UPDATE global_extractions SET status=?, extracted_json=?, extracted_at=?, "
+            "model_provider=?, last_error=?, claimed_at=NULL WHERE raw_item_id=?",
+            (status, json.dumps(extracted, ensure_ascii=False) if extracted is not None else None,
+             datetime.now().isoformat(), model_provider, error, raw_item_id),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def get_completed_global_extractions() -> List[Dict]:
+    init_db()
+    conn = get_connection()
+    try:
+        rows = conn.execute(
+            "SELECT raw_item_id, urn, extracted_json FROM global_extractions "
+            "WHERE status='completed' ORDER BY raw_item_id ASC"
+        ).fetchall()
+        return [{"_raw_item_id": r["raw_item_id"], "urn": r["urn"], **json.loads(r["extracted_json"])} for r in rows]
+    finally:
+        conn.close()
+
+
+def get_global_extraction_metrics() -> Dict[str, int]:
+    init_db()
+    conn = get_connection()
+    try:
+        rows = conn.execute("SELECT status, COUNT(*) AS count FROM global_extractions GROUP BY status").fetchall()
+        return {r["status"]: r["count"] for r in rows}
+    finally:
+        conn.close()
 
 
 def get_unprocessed_raw_items_for_user(user_id: str, limit: Optional[int] = None) -> List[Dict]:

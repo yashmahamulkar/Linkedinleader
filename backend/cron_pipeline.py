@@ -21,7 +21,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 from script import LinkedInRunner, create_default_search_urls, scraper_registry
 import db as db_store
-from server import run_extraction_for_user, USERS_DIR
+from server import run_extraction_for_user, run_global_extraction, USERS_DIR
 
 DEFAULT_EXTRA_SCRAPERS = "arbeitnow,hackernews,weworkremotely,greenhouse,wellfound,adzuna"
 
@@ -63,10 +63,12 @@ def run_pipeline(limit, scrape_jobs, scrape_indeed, indeed_input, scrape_glassdo
     newly_stored = db_store.insert_raw_items(raw_items, source="posts")
     logging.info(f"Scraping finished. Got {len(raw_items)} raw items ({newly_stored} new).")
 
+    global_metrics = run_global_extraction()
+    logging.info(f"Global extraction metrics: {global_metrics}")
     total_extraction_attempts = 0
     if USERS_DIR.exists():
         user_folders = [f.name for f in USERS_DIR.iterdir() if f.is_dir()]
-        logging.info(f"Running LLM extraction for users: {user_folders}")
+        logging.info(f"Running cached user matching for users: {user_folders}")
         for user_id in user_folders:
             try:
                 count = run_extraction_for_user(user_id)
@@ -80,6 +82,7 @@ def run_pipeline(limit, scrape_jobs, scrape_indeed, indeed_input, scrape_glassdo
         "raw_items_scraped": len(raw_items),
         "raw_items_new": newly_stored,
         "extraction_attempts": total_extraction_attempts,
+        "global_extraction": global_metrics,
         "scrapers_run": scrapers_to_run,
     }
     logging.info(f"Cron pipeline run complete: {result}")

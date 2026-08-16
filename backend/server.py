@@ -18,6 +18,7 @@ import json
 import re
 import logging
 import threading
+from dataclasses import asdict
 from pathlib import Path
 from datetime import datetime
 from typing import Optional, Dict, Any, List
@@ -70,6 +71,7 @@ pipeline_status: Dict[str, Any] = {
     "users_processed": 0,
     "current_user": None,
     "error": None,
+    "metrics": {},
 }
 
 
@@ -919,23 +921,173 @@ def get_user_dashboard_summary(user_id: str):
 
 # ----------------- CENTRAL SCRAPE ENGINE (BACKGROUND THREAD) -----------------
 
+GLOBAL_EXTRACTION_PROMPT_VERSION = "global-v1"
+_last_user_matching_metrics: Dict[str, int] = {"evaluated": 0, "matched": 0, "leads_created": 0}
+STRUCTURED_SOURCES = {
+    "jobs", "indeed", "glassdoor", "himalayas", "remoteok", "remotive", "jobicy",
+    "arbeitnow", "hackernews", "weworkremotely", "greenhouse", "wellfound", "adzuna",
+}
+
+
+def _global_prefilter(item: Dict) -> tuple[bool, str]:
+    """Conservative, user-independent filter used before any global LLM call."""
+    text = str(item.get("text") or item.get("description") or "").strip()
+    if not text:
+        return False, "empty_text"
+    if not item.get("_raw_item_id") or not (item.get("urn") or item.get("_urn")):
+        return False, "malformed_record"
+    return True, "eligible"
+
+
+def _structured_lead(item: Dict) -> ExtractedLead:
+    """Normalize source-provided job fields without spending an LLM call."""
+    text = str(item.get("text") or "")
+    title = item.get("title") or item.get("jobTitle") or None
+    company = item.get("companyName") or item.get("company") or item.get("authorName") or None
+    location = item.get("location") or item.get("jobLocation") or item.get("authorHeadline") or None
+    url = item.get("url") or item.get("jobUrl") or item.get("applyUrl") or None
+    email_match = re.search(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", text)
+    method = "email" if email_match else ("link" if url else "other")
+    contact = email_match.group(0) if email_match else url
+    lower = f"{title or ''} {text}".lower()
+    internship = "intern" in lower or "trainee" in lower
+    fresher = internship or any(x in lower for x in ("fresher", "new grad", "entry-level", "entry level"))
+    level = "Internship" if internship else ("Fresher" if fresher else None)
+    return ExtractedLead(
+        post_urn=str(item.get("urn") or item.get("_urn")), application_method=method,
+        posting_date=str(item.get("postedAtISO") or item.get("postedAt") or ""),
+        author_name=str(item.get("authorName") or company or ""),
+        author_profile=str(item.get("authorProfileUrl") or ""), is_job_posting=True,
+        post_category="job", job_title=title, company_name=company, location=location,
+        work_mode="Remote" if (str(location or "").lower() == "remote" or "remote" in lower) else None,
+        experience_level=[0, 0] if fresher else None, application_contact=contact, post_url=url,
+        role_level=level, is_internship=internship, is_fresher=fresher,
+        source=item.get("_source"), company_logo=item.get("companyLogo") or None,
+    )
+
+
+def _lead_from_dict(data: Dict) -> ExtractedLead:
+    fields = {f.name for f in ExtractedLead.__dataclass_fields__.values()}
+    return ExtractedLead(**{k: v for k, v in data.items() if k in fields})
+
+
+def _lead_matches_user(lead: ExtractedLead, pref: PreferenceManager) -> tuple[bool, Dict[str, Any]]:
+    """Cheap matching only; no candidate/private settings enter global extraction."""
+    if not lead.is_job_posting:
+        return False, {"reason": "not_job"}
+    title = (lead.job_title or "").lower()
+    haystack = " ".join([title, lead.company_name or "", *(lead.tech_stack or []), *(lead.skills_required or [])]).lower()
+    roles = [r.lower().strip() for r in pref.preferred_roles() if r.strip()]
+    categories = pref.categories()
+    role_hit = any(r in haystack or any(token in haystack for token in r.split() if len(token) > 2) for r in roles)
+    category = None
+    for key, data in categories.items():
+        rules = str(data.get("rules", "")).lower()
+        if key.lower() in haystack or any(token in haystack for token in re.findall(r"[a-zA-Z]{3,}", rules)):
+            category, role_hit = key, True
+            break
+    if roles or categories:
+        if not role_hit:
+            return False, {"reason": "role"}
+    custom = pref.custom_instructions().lower()
+    excluded = []
+    for marker in ("exclude", "avoid", "not interested in"):
+        if marker in custom:
+            excluded.extend(re.split(r"[,;]", custom.split(marker, 1)[1])[:5])
+    if any(term.strip() and term.strip() in haystack for term in excluded):
+        return False, {"reason": "custom_instruction"}
+    locations = [x.lower().strip() for x in pref.preferred_locations() if x.strip()]
+    actual_location = (lead.location or "").lower()
+    location_hit = not locations or not actual_location or any(x in actual_location or actual_location in x for x in locations)
+    if not location_hit and "remote" in locations and lead.work_mode == "Remote":
+        location_hit = True
+    if not location_hit:
+        return False, {"reason": "location"}
+    if lead.role_level and lead.role_level.lower() in {"senior", "mid-level", "lead", "principal"}:
+        return False, {"reason": "seniority"}
+    reasons = ["job posting", "role/category match"]
+    if location_hit:
+        reasons.append("location match")
+    return True, {"category": category, "match_reasons": reasons, "score": 1.0}
+
+
+def run_global_extraction(limit: Optional[int] = None) -> Dict[str, int]:
+    """Normalize and extract each shared raw item once, independent of users."""
+    raw = db_store.get_global_extraction_candidates(limit=limit)
+    metrics = {"candidates": len(raw), "skipped_by_filter": 0, "already_extracted": 0,
+               "llm_items": 0, "llm_successes": 0, "llm_failures": 0, "structured_items": 0}
+    if not raw:
+        metrics.update(db_store.get_global_extraction_metrics())
+        return metrics
+    normalizer = LinkedInRunner()
+    normalized = normalizer.normalize_bucketed_items(raw)
+    by_id = {item.get("_raw_item_id"): item for item in normalized}
+    llm_runner = None
+    for raw_item in raw:
+        raw_id = raw_item.get("_raw_item_id")
+        item = by_id.get(raw_id, raw_item)
+        ok, reason = _global_prefilter(item)
+        if not ok:
+            metrics["skipped_by_filter"] += 1
+            db_store.save_global_extraction(raw_id, raw_item.get("_urn") or raw_item.get("urn"),
+                                            {"_skipped": True, "skip_reason": reason})
+            continue
+        urn = raw_item.get("_urn") or raw_item.get("urn")
+        if not db_store.claim_global_extraction(raw_id, urn):
+            metrics["already_extracted"] += 1
+            continue
+        try:
+            if item.get("_source") in STRUCTURED_SOURCES:
+                lead = _structured_lead(item)
+                metrics["structured_items"] += 1
+            else:
+                if llm_runner is None:
+                    llm_runner = LinkedInRunner()
+                    llm_runner._initialize_extractor()
+                lead, _ = llm_runner.extractor.process_single_post(item)
+                if lead is None:
+                    raise ValueError("extractor returned no result")
+                metrics["llm_items"] += 1
+            payload = asdict(lead)
+            payload["_raw_item_id"] = raw_id
+            db_store.save_global_extraction(raw_id, urn, payload)
+            metrics["llm_successes"] += 1 if item.get("_source") not in STRUCTURED_SOURCES else 0
+        except Exception as exc:
+            metrics["llm_failures"] += 1
+            logging.exception("Global extraction failed for %s", urn)
+            db_store.save_global_extraction(raw_id, urn, None, error=str(exc))
+    return metrics
+
+
 def run_extraction_for_user(user_id: str, limit: Optional[int] = None) -> int:
-    """Run LLM extraction for one user against every raw item stored in the DB that this
-    user's extractor has never attempted yet. Shared by the scrape pipeline (new raw items)
-    and new-user provisioning (backlog of existing raw items). Returns count of items attempted.
-    """
-    unprocessed = db_store.get_unprocessed_raw_items_for_user(user_id, limit=limit)
-    if not unprocessed:
+    """Match cached global facts to one user and save only that user's leads."""
+    items = db_store.get_completed_global_extractions()
+    if limit:
+        items = items[:limit]
+    if not items:
         return 0
-
-    # Posts are already post-shaped and need no normalization. Every other source is raw
-    # actor/API output at this point -- each gets normalized exactly once, here, via a single
-    # bucket-and-normalize pass (see LinkedInRunner.NORMALIZER_METHODS for the source list).
-    user_runner = LinkedInRunner(user_id=user_id)
-    combined_items = user_runner.normalize_bucketed_items(unprocessed)
-
-    user_runner.extract_leads_from_posts(combined_items)
-    return len(combined_items)
+    pref = PreferenceManager(user_id=user_id)
+    matched = []
+    evaluated = 0
+    raw_ids_by_urn = {}
+    for item in items:
+        if item.get("_skipped"):
+            continue
+        lead = _lead_from_dict(item)
+        raw_ids_by_urn[str(lead.post_urn)] = item.get("_raw_item_id")
+        evaluated += 1
+        is_match, match_data = _lead_matches_user(lead, pref)
+        raw_id = item.get("_raw_item_id")
+        if is_match:
+            valid_categories = list(pref.categories().keys())
+            lead.email_template_type = match_data.get("category") or (valid_categories[0] if valid_categories else "software_dev")
+            matched.append(lead)
+        if raw_id:
+            db_store.mark_attempted(user_id, raw_id, matched=is_match)
+    inserted = db_store.save_leads(user_id, matched, raw_ids_by_urn)
+    _last_user_matching_metrics.update({"evaluated": evaluated, "matched": len(matched), "leads_created": inserted})
+    logging.info("User %s matching: evaluated=%d matched=%d leads_created=%d", user_id, evaluated, len(matched), inserted)
+    return len(items)
 
 
 def provision_user_leads(user_id: str):
@@ -943,6 +1095,7 @@ def provision_user_leads(user_id: str):
     returning user who logged in between scrape cycles). Runs in a background thread."""
     try:
         logging.info(f"🔬 Provisioning leads for user {user_id} from existing raw_items backlog...")
+        run_global_extraction()
         count = run_extraction_for_user(user_id)
         logging.info(f"✅ Provisioning complete for {user_id}: {count} backlog items processed")
     except Exception as e:
@@ -1000,24 +1153,34 @@ def execute_pipeline_background(search_urls: List[str], limit: int, scrape_jobs:
         logging.info(f"Global scraping finished. Got {len(raw_items)} raw items ({newly_stored} new).")
         _update_pipeline_status(stage="extracting", raw_items_scraped=len(raw_items), raw_items_new=newly_stored)
 
-        # Step 3: Run extraction for every registered user against whatever is unprocessed
-        # for them (this run's new items, plus any backlog from a failed previous run).
+        # Global extraction is deliberately completed before user processing. The cache is
+        # keyed by raw item identity, so the same post is never sent once per user.
+        global_metrics = run_global_extraction()
+        logging.info("Global extraction metrics: %s", global_metrics)
+        _update_pipeline_status(metrics=global_metrics)
+
+        # Step 4: Match the shared structured cache independently for each user.
         if os.path.exists(USERS_DIR):
             user_folders = [f for f in os.listdir(USERS_DIR) if os.path.isdir(USERS_DIR / f)]
             logging.info(f"Processing lead extraction for registered users: {user_folders}")
             _update_pipeline_status(users_total=len(user_folders))
+            user_metrics = {"user_matches_evaluated": 0, "user_leads_created": 0}
 
             for user_id in user_folders:
                 _update_pipeline_status(current_user=user_id)
                 try:
                     logging.info(f"🔬 Running lead extraction for User: {user_id}...")
                     count = run_extraction_for_user(user_id)
+                    user_metrics["user_matches_evaluated"] += _last_user_matching_metrics["evaluated"]
+                    user_metrics["user_leads_created"] += _last_user_matching_metrics["leads_created"]
                     logging.info(f"✅ User {user_id} pipeline extraction complete! ({count} items)")
                 except Exception as user_err:
                     logging.error(f"Failed pipeline extraction for User {user_id}: {user_err}")
                 finally:
                     with _pipeline_status_lock:
                         pipeline_status["users_processed"] += 1
+            global_metrics.update(user_metrics)
+            _update_pipeline_status(metrics=global_metrics)
 
         logging.info("🎉 Background pipeline execution completed successfully for all users!")
         _update_pipeline_status(running=False, stage="done", finished_at=datetime.now().isoformat(), current_user=None)
