@@ -1,7 +1,7 @@
 {
   "keys": [
     {
-      "key": "AIzaSyBp73ntLeBQuOhbYMUmFF1-iAmJAUBykW8",
+      "key": "",
       "requests_per_day_limit": 500,
       "requests_per_minute_limit": 15,
       "tokens_per_minute_limit": 250000,
