@@ -404,7 +404,27 @@ class LinkedInLeadExtractor:
             try:
                 llm = self._get_next_llm()
                 response = self._invoke_llm_with_quota(llm, [HumanMessage(content=prompt)], token_estimate=500)
-                extracted_data = self.parser.parse(_extract_text_content(response.content))
+                response_text = _extract_text_content(response.content).strip()
+                try:
+                    extracted_data = self.parser.parse(response_text)
+                except Exception:
+                    # Some models return a JSON array when a roundup post contains
+                    # several jobs, despite the single-item schema. Keep the raw item
+                    # globally cacheable and preserve the first factual result rather
+                    # than marking the whole post failed and retrying it every cron run.
+                    cleaned = response_text
+                    if cleaned.startswith("```"):
+                        cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", cleaned, flags=re.IGNORECASE | re.DOTALL).strip()
+                    payload = json.loads(cleaned)
+                    if isinstance(payload, list):
+                        if not payload or not isinstance(payload[0], dict):
+                            raise ValueError("global extraction returned an empty/non-object list")
+                        logging.warning(
+                            "Global extraction returned %d jobs for %s; using the first structured result",
+                            len(payload), post_data.get("urn", "unknown"),
+                        )
+                        payload = payload[0]
+                    extracted_data = self.parser.parse(json.dumps(payload, ensure_ascii=False))
                 break
             except Exception as exc:
                 error = exc
