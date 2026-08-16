@@ -2,6 +2,7 @@ venv/
 __pycache__/
 *.pyc
 .env
+backend/configs/scraper_keys.json
 y
 
 
