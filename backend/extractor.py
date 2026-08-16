@@ -359,6 +359,100 @@ class LinkedInLeadExtractor:
         """
         return ChatPromptTemplate.from_template(prompt_template)
 
+    def _create_global_extraction_prompt(self) -> ChatPromptTemplate:
+        """Build the user-independent prompt used by the shared extraction cache.
+
+        This deliberately contains no preferences, candidate details, resume data,
+        categories, or email settings.  Those belong to the later user-matching stage.
+        """
+        return ChatPromptTemplate.from_template(f"""
+        Extract factual job/post information from this LinkedIn post.
+        Do not decide whether it matches any candidate. Do not use user preferences.
+        Return only facts explicitly present in the post; use null/empty values when absent.
+
+        POST TEXT: {{post_text}}
+        AUTHOR: {{author_name}}
+        AUTHOR HEADLINE: {{author_headline}}
+
+        Classify whether this is a genuine job or recruitment post. Preserve the distinction
+        between formal job postings and general networking/educational content.
+        Extract title, company, location, work mode, experience, salary, skills, application
+        method/contact, URL, internship/fresher indicators, graduation years, eligibility,
+        and the post category using the output schema below.
+
+        {{format_instructions}}
+        """)
+
+    def extract_single_post_globally(self, post_data: Dict) -> Tuple[Optional[ExtractedLead], str]:
+        """Extract one post without invoking preference filtering or using user data.
+
+        This is the only LLM path used by the global extraction cache.  It makes one
+        extraction request per claimed raw item (with the existing key retry behavior).
+        """
+        if not post_data.get("text"):
+            return None, "NO_TEXT"
+
+        prompt = self._create_global_extraction_prompt().format(
+            post_text=post_data.get("text", ""),
+            author_name=post_data.get("authorName", ""),
+            author_headline=post_data.get("authorHeadline", ""),
+            format_instructions=self.parser.get_format_instructions(),
+        )
+        extracted_data = None
+        error = None
+        for _ in range(max(1, len(self.llms))):
+            try:
+                llm = self._get_next_llm()
+                response = self._invoke_llm_with_quota(llm, [HumanMessage(content=prompt)], token_estimate=500)
+                extracted_data = self.parser.parse(_extract_text_content(response.content))
+                break
+            except Exception as exc:
+                error = exc
+        if extracted_data is None:
+            logging.warning("Global extraction failed for %s: %s", post_data.get("urn", "unknown"), error)
+            return None, f"EXTRACTION_ERROR: {error}"
+
+        text = post_data.get("text", "") or ""
+        contact_info = self.extract_contact_info(text)
+        text_lower = text.lower()
+        year_matches = re.findall(r"\b(202[4-9])\b", text_lower)
+        is_intern = "intern" in text_lower or "internship" in text_lower
+        is_fresher = any(term in text_lower for term in (
+            "fresher", "new grad", "newgraduate", "entry level", "entry-level",
+            "0-1 year", "0 to 1 year",
+        ))
+        post_url = (post_data.get("url") or post_data.get("postUrl") or
+                    post_data.get("linkedinUrl") or post_data.get("permalink"))
+        return ExtractedLead(
+            post_urn=str(post_data.get("urn") or post_data.get("_urn") or ""),
+            job_title=extracted_data.job_title,
+            company_name=extracted_data.company_name,
+            location=extracted_data.location,
+            work_mode=extracted_data.work_mode,
+            experience_level=extracted_data.experience_level,
+            salary_range=extracted_data.salary_range,
+            tech_stack=extracted_data.tech_stack,
+            skills_required=extracted_data.skills_required,
+            application_method=contact_info["method"],
+            application_contact=contact_info["primary_contact"],
+            posting_date=post_data.get("postedAtISO", ""),
+            author_name=post_data.get("authorName", ""),
+            author_profile=post_data.get("authorProfileUrl", ""),
+            post_url=post_url,
+            is_job_posting=extracted_data.is_job_posting,
+            post_category=extracted_data.post_category,
+            role_level=getattr(extracted_data, "role_level", None),
+            is_internship=getattr(extracted_data, "is_internship", None) or (True if is_intern else None),
+            is_fresher=getattr(extracted_data, "is_fresher", None) or (True if is_fresher else None),
+            graduation_years=getattr(extracted_data, "graduation_years", None) or ([int(y) for y in year_matches] or None),
+            internship_duration=getattr(extracted_data, "internship_duration", None),
+            stipend_range=getattr(extracted_data, "stipend_range", None),
+            application_deadline=getattr(extracted_data, "application_deadline", None),
+            eligibility_criteria=getattr(extracted_data, "eligibility_criteria", None),
+            company_logo=post_data.get("companyLogo") or post_data.get("authorProfilePicture"),
+            source=post_data.get("_source"),
+        ), "GLOBAL_EXTRACTED"
+
     def extract_contact_info(self, text: str) -> Dict[str, Union[str, List[str]]]:
         """Extract email addresses and links from text"""
         email_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'

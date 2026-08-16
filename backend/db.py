@@ -345,11 +345,23 @@ def claim_global_extraction(raw_item_id: int, urn: str) -> bool:
     try:
         conn.execute("BEGIN IMMEDIATE")
         row = conn.execute(
-            "SELECT status FROM global_extractions WHERE raw_item_id = ?", (raw_item_id,)
+            "SELECT status, claimed_at FROM global_extractions WHERE raw_item_id = ?", (raw_item_id,)
         ).fetchone()
-        if row and row["status"] in ("completed", "processing"):
+        if row and row["status"] == "completed":
             conn.rollback()
             return False
+        if row and row["status"] == "processing":
+            # Recover a claim abandoned by a killed cron process, while keeping
+            # simultaneous workers from issuing duplicate LLM requests.
+            claimed_at = row["claimed_at"]
+            if claimed_at:
+                try:
+                    age = datetime.now() - datetime.fromisoformat(claimed_at)
+                    if age < timedelta(hours=1):
+                        conn.rollback()
+                        return False
+                except ValueError:
+                    pass
         now = datetime.now().isoformat()
         conn.execute(
             "INSERT INTO global_extractions "
@@ -373,11 +385,15 @@ def save_global_extraction(raw_item_id: int, urn: str, extracted: Optional[Dict]
     conn = get_connection()
     try:
         status = "completed" if extracted is not None and not error else "failed"
+        payload = json.dumps(extracted, ensure_ascii=False) if extracted is not None else None
         conn.execute(
-            "UPDATE global_extractions SET status=?, extracted_json=?, extracted_at=?, "
-            "model_provider=?, last_error=?, claimed_at=NULL WHERE raw_item_id=?",
-            (status, json.dumps(extracted, ensure_ascii=False) if extracted is not None else None,
-             datetime.now().isoformat(), model_provider, error, raw_item_id),
+            "INSERT INTO global_extractions "
+            "(raw_item_id, urn, status, extracted_json, extracted_at, model_provider, last_error, claimed_at) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, NULL) "
+            "ON CONFLICT(raw_item_id) DO UPDATE SET status=excluded.status, "
+            "extracted_json=excluded.extracted_json, extracted_at=excluded.extracted_at, "
+            "model_provider=excluded.model_provider, last_error=excluded.last_error, claimed_at=NULL",
+            (raw_item_id, str(urn), status, payload, datetime.now().isoformat(), model_provider, error),
         )
         conn.commit()
     finally:
@@ -403,6 +419,17 @@ def get_global_extraction_metrics() -> Dict[str, int]:
     try:
         rows = conn.execute("SELECT status, COUNT(*) AS count FROM global_extractions GROUP BY status").fetchall()
         return {r["status"]: r["count"] for r in rows}
+    finally:
+        conn.close()
+
+
+def count_completed_global_extractions() -> int:
+    init_db()
+    conn = get_connection()
+    try:
+        return conn.execute(
+            "SELECT COUNT(*) AS count FROM global_extractions WHERE status = 'completed'"
+        ).fetchone()["count"]
     finally:
         conn.close()
 

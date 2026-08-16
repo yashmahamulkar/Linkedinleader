@@ -45,6 +45,102 @@ class GlobalPipelineStorageTests(unittest.TestCase):
         db.save_global_extraction(candidate["_raw_item_id"], candidate["_urn"], payload)
         self.assertEqual(len(db.get_completed_global_extractions()), 1)
 
+    def test_pipeline_calls_global_extractor_once_and_never_user_filter(self):
+        import server
+
+        item = {"urn": "urn:post:shared", "text": "We are hiring a Python intern"}
+        db.insert_raw_items([item], "posts")
+        calls = []
+
+        class FakeExtractor:
+            def extract_single_post_globally(self, post):
+                calls.append(post["_urn"])
+                from extractor import ExtractedLead
+                return ExtractedLead(
+                    post_urn=post["_urn"], application_method="other", posting_date="",
+                    author_name="", author_profile="", is_job_posting=True,
+                    post_category="job", job_title="Python Intern", location="Remote",
+                    is_internship=True, is_fresher=True,
+                ), "GLOBAL_EXTRACTED"
+
+            def process_single_post(self, post):
+                raise AssertionError("global pipeline must not use user-dependent extraction")
+
+        class FakeRunner:
+            def normalize_bucketed_items(self, items):
+                return items
+
+            def _initialize_extractor(self):
+                self.extractor = FakeExtractor()
+
+        with patch.object(server, "LinkedInRunner", FakeRunner):
+            first = server.run_global_extraction()
+            second = server.run_global_extraction()
+
+        self.assertEqual(calls, ["urn:post:shared"])
+        self.assertEqual(first["llm_successes"], 1)
+        self.assertEqual(second["candidates"], 0)
+        self.assertGreaterEqual(second["already_extracted"], 1)
+
+    def test_prefiltered_item_is_cached_as_skipped(self):
+        import server
+
+        db.insert_raw_items([{"urn": "urn:post:empty", "text": ""}], "posts")
+        with patch.object(server, "LinkedInRunner"):
+            first = server.run_global_extraction()
+            second = server.run_global_extraction()
+        self.assertEqual(first["skipped_by_filter"], 1)
+        self.assertEqual(second["candidates"], 0)
+
+    def test_structured_source_pipeline_uses_zero_llm_calls(self):
+        import server
+
+        item = {
+            "urn": "greenhouse-structured-1", "_scraper_source": "greenhouse",
+            "title": "Python Intern", "companyName": "Example", "location": "Remote",
+            "url": "https://example.test/apply", "text": "Python Intern at Example",
+        }
+        db.insert_raw_items([item], "posts")
+
+        class FakeRunner:
+            def normalize_bucketed_items(self, items):
+                return items
+
+            def _initialize_extractor(self):
+                raise AssertionError("structured sources must not initialize an LLM")
+
+        with patch.object(server, "LinkedInRunner", FakeRunner):
+            metrics = server.run_global_extraction()
+
+        self.assertEqual(metrics["structured_items"], 1)
+        self.assertEqual(metrics["llm_items"], 0)
+
+    def test_failed_global_extraction_remains_retryable(self):
+        import server
+
+        db.insert_raw_items([{"urn": "urn:post:retry", "text": "Hiring Python developer"}], "posts")
+        calls = []
+
+        class FakeExtractor:
+            def extract_single_post_globally(self, post):
+                calls.append(post["_urn"])
+                return None, "EXTRACTION_ERROR"
+
+        class FakeRunner:
+            def normalize_bucketed_items(self, items):
+                return items
+
+            def _initialize_extractor(self):
+                self.extractor = FakeExtractor()
+
+        with patch.object(server, "LinkedInRunner", FakeRunner):
+            first = server.run_global_extraction()
+            second = server.run_global_extraction()
+
+        self.assertEqual(first["llm_failures"], 1)
+        self.assertEqual(second["llm_failures"], 1)
+        self.assertEqual(calls, ["urn:post:retry", "urn:post:retry"])
+
     def test_structured_source_does_not_require_llm(self):
         from server import _structured_lead
         lead = _structured_lead({

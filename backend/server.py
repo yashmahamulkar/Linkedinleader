@@ -1016,6 +1016,9 @@ def run_global_extraction(limit: Optional[int] = None) -> Dict[str, int]:
     raw = db_store.get_global_extraction_candidates(limit=limit)
     metrics = {"candidates": len(raw), "skipped_by_filter": 0, "already_extracted": 0,
                "llm_items": 0, "llm_successes": 0, "llm_failures": 0, "structured_items": 0}
+    # This is cumulative cache visibility, useful for cron logs even when this run
+    # has no new candidates. Candidates themselves exclude completed rows.
+    metrics["already_extracted"] = db_store.count_completed_global_extractions()
     if not raw:
         metrics.update(db_store.get_global_extraction_metrics())
         return metrics
@@ -1044,7 +1047,10 @@ def run_global_extraction(limit: Optional[int] = None) -> Dict[str, int]:
                 if llm_runner is None:
                     llm_runner = LinkedInRunner()
                     llm_runner._initialize_extractor()
-                lead, _ = llm_runner.extractor.process_single_post(item)
+                # Critical invariant: this method never runs user preference filtering.
+                # The old process_single_post() path performed a preference-dependent LLM
+                # filter before extraction and therefore could not be shared safely.
+                lead, _ = llm_runner.extractor.extract_single_post_globally(item)
                 if lead is None:
                     raise ValueError("extractor returned no result")
                 metrics["llm_items"] += 1
